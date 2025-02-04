@@ -39,4 +39,3 @@ public class AdmissionStateEntity {
     @JoinColumn(name = "clinical_data_id")
     private ClinicalDataEntity clinicalDataEntity;
 }
-
