@@ -20,4 +20,6 @@ public class PatientDto {
     private String patient_last_name;
 
     private LocalDate patient_birthdate;
+
+    private Long department_id;
 }

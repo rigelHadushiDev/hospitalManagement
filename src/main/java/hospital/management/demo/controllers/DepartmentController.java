@@ -70,9 +70,6 @@ public class DepartmentController {
         return new ResponseEntity<>(
                 departmentMapper.mapTo(updatedDepartment),
                 HttpStatus.OK);
-
-
-
     }
 
 

@@ -16,4 +16,5 @@ public class ClinicalDataDto {
 
     private String clinical_record;
 
+    private Long admission_state_id;
 }
