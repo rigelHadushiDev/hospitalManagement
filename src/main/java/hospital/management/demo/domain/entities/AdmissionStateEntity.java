@@ -35,8 +35,5 @@ public class AdmissionStateEntity {
     @JoinColumn(name = "patient_id")
     private PatientEntity patientEntity;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "clinical_data_id")
-    private ClinicalDataEntity clinicalDataEntity;
 }
 

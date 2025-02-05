@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -30,4 +32,6 @@ public class PatientEntity {
     @JoinColumn(name = "department_id")
     private DepartmentEntity departmentEntity;
 
+    @OneToMany(mappedBy = "patientEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AdmissionStateEntity> admissionStateEntities = new HashSet<>();
 }

@@ -1,12 +1,16 @@
 package hospital.management.demo.services.impl;
 
 
+import hospital.management.demo.domain.entities.DepartmentEntity;
 import hospital.management.demo.domain.entities.PatientEntity;
+import hospital.management.demo.repositories.DepartmentRepository;
 import hospital.management.demo.repositories.PatientRepository;
 import hospital.management.demo.services.PatientService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -15,13 +19,20 @@ public class PatientServiceImpl implements PatientService {
 
     private PatientRepository patientRepository;
 
-    public PatientServiceImpl(PatientRepository patientRepository) {
+    private DepartmentRepository departmentRepository;
+    public PatientServiceImpl(PatientRepository patientRepository, DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
         this.patientRepository = patientRepository;
     }
 
     @Override
     public PatientEntity save(PatientEntity patientEntity) {
-        patientEntity.setDepartmentEntity(null);
+        if (patientEntity.getDepartmentEntity() != null) {
+            Long departmentId = patientEntity.getDepartmentEntity().getDepartment_id();
+            DepartmentEntity departmentEntity = departmentRepository.findById(String.valueOf(departmentId))
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department not found"));
+            patientEntity.setDepartmentEntity(departmentEntity);
+        }
         return patientRepository.save(patientEntity);
     }
 
