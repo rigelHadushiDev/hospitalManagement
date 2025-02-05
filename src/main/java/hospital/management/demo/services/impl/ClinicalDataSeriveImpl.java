@@ -25,23 +25,6 @@ public class ClinicalDataSeriveImpl implements ClinicalDataService {
     }
 
     @Override
-    public ClinicalDataEntity save(ClinicalDataEntity clinicalDataEntity) {
-        Long admissionStateId = clinicalDataEntity.getAdmissionState().getId();
-
-        AdmissionStateEntity admissionState = admissionStateRepository.findById(admissionStateId)
-                .orElseThrow(() -> new RuntimeException("AdmissionState not found"));
-
-        if (admissionState.isDischarge()) {
-            throw new RuntimeException("Cannot add clinical data, patient is discharged.");
-        }
-
-        if (clinicalDataRepository.existsByAdmissionStateId(admissionStateId)) {
-            throw new RuntimeException("ClinicalData already exists for this AdmissionState.");
-        }
-        return clinicalDataRepository.save(clinicalDataEntity);
-    }
-
-    @Override
     public List<ClinicalDataEntity> findAll() {
         return StreamSupport.stream(clinicalDataRepository
                                 .findAll()
@@ -66,9 +49,8 @@ public class ClinicalDataSeriveImpl implements ClinicalDataService {
 
         return clinicalDataRepository.findById(String.valueOf(clinical_data_id)).map(existingClinicalData -> {
             Optional.ofNullable(clinicalDataEntity.getClinical_record()).ifPresent(existingClinicalData::setClinical_record);
-            Optional.ofNullable(clinicalDataEntity.getAdmission_state_id()).ifPresent(existingClinicalData::setAdmission_state_id());
             return clinicalDataRepository.save(existingClinicalData);
-        }).orElseThrow(() -> new RuntimeException("Department does not exist"));
+        }).orElseThrow(() -> new RuntimeException("Clinical Data does not exist"));
     }
 
     @Override

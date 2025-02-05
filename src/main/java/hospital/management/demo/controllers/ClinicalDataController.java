@@ -1,13 +1,8 @@
 package hospital.management.demo.controllers;
-
 import hospital.management.demo.domain.dtos.ClinicalDataDto;
-
-import hospital.management.demo.domain.dtos.DepartmentDto;
 import hospital.management.demo.domain.entities.ClinicalDataEntity;
-import hospital.management.demo.domain.entities.DepartmentEntity;
 import hospital.management.demo.mappers.Mapper;
 import hospital.management.demo.services.ClinicalDataService;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/clinicaldata")
+@RequestMapping("clinicalData")
 public class ClinicalDataController {
 
     private ClinicalDataService clinicalDataService;
@@ -30,17 +25,6 @@ public class ClinicalDataController {
         this.clinicalDataMapper = clinicalDataMapper;
     }
 
-    @PostMapping
-    public ResponseEntity<?> createClinicalData(@RequestBody ClinicalDataDto clinicalDataDto) {
-        try {
-            ClinicalDataEntity clinicalDataEntity = clinicalDataMapper.mapFrom(clinicalDataDto);
-            ClinicalDataEntity savedClinicalDataEntity = clinicalDataService.save(clinicalDataEntity);
-            return new ResponseEntity<>(clinicalDataMapper.mapTo(savedClinicalDataEntity), HttpStatus.CREATED);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
 
     @GetMapping
     public Page<ClinicalDataDto> listClinicalData(Pageable pageable) {
@@ -48,7 +32,7 @@ public class ClinicalDataController {
         return clinicalData.map(clinicalDataMapper::mapTo);
     }
 
-    @GetMapping(path = "/clinical_data_id")
+    @GetMapping("/{clinical_data_id}")
     public ResponseEntity<ClinicalDataDto> getClinicalData(@PathVariable("clinical_data_id") Long clinical_data_id) {
         Optional<ClinicalDataEntity> foundClinicalData = clinicalDataService.findOne(clinical_data_id);
         return foundClinicalData.map(ClinicalDataEntity -> {
@@ -57,7 +41,7 @@ public class ClinicalDataController {
         }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping(path = "/clinical_data_id")
+    @PatchMapping(path = "/{clinical_data_id}")
     public ResponseEntity<ClinicalDataDto> updateClinicalData(
             @PathVariable("clinical_data_id") Long clinical_data_id,
             @RequestBody ClinicalDataDto clinicalDataDto
@@ -73,7 +57,7 @@ public class ClinicalDataController {
                 HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/clinical_data_id")
+    @DeleteMapping(path = "/{clinical_data_id}")
     public ResponseEntity deleteClinicalData(@PathVariable("clinical_data_id") Long clinical_data_id) {
         clinicalDataService.delete(clinical_data_id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

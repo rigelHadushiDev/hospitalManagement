@@ -11,8 +11,6 @@ import java.util.Optional;
 
 public interface ClinicalDataService {
 
-    ClinicalDataEntity save(ClinicalDataEntity clinicalDataEntity);
-
     Page<ClinicalDataEntity> findAll(Pageable pageable);
 
     List<ClinicalDataEntity> findAll();
