@@ -32,6 +32,7 @@ public class DepartmentController {
         return new ResponseEntity<>(departmentMapper.mapTo(savedDepartmentEntity), HttpStatus.CREATED);
     }
 
+
     @GetMapping
     public Page<DepartmentDto> listDepartments(Pageable pageable) {
         Page<DepartmentEntity> departments = departmentService.findAll(pageable);
