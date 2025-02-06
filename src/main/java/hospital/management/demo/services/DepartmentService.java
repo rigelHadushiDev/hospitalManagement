@@ -1,7 +1,4 @@
 package hospital.management.demo.services;
-
-
-
 import hospital.management.demo.domain.entities.DepartmentEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -25,4 +25,6 @@ public class AdmissionStateDto {
     private String reason;
 
     private boolean discharge;
+
+    private Long patient_id;
 }

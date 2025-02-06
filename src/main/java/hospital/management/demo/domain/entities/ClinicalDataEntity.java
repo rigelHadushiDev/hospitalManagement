@@ -20,7 +20,7 @@ public class ClinicalDataEntity {
 
     private String clinical_record;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "patient_id")
-    private PatientEntity patientEntity;
+    @OneToOne
+    @JoinColumn(name = "admission_state_id", nullable = true)
+    private AdmissionStateEntity admissionStateEntity;
 }

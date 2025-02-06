@@ -18,4 +18,5 @@ public interface PatientService {
     boolean isExists(Long patient_id);
 
     PatientEntity partialUpdate(Long patient_id, PatientEntity patientEntity);
+
 }
