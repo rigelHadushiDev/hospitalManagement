@@ -31,8 +31,8 @@ public class AdmissionStateEntity {
 
     private Boolean discharge = false;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "patient_id", nullable = true)
+    @ManyToOne()
+    @JoinColumn(name = "patient_id")
     private PatientEntity patientEntity;
 
 }

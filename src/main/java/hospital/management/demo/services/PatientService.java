@@ -19,4 +19,6 @@ public interface PatientService {
 
     PatientEntity partialUpdate(Long patient_id, PatientEntity patientEntity);
 
+    Page<PatientEntity> searchPatientsByFullName(String fullName, Pageable pageable);
+
 }

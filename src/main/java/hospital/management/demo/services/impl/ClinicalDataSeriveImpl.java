@@ -8,7 +8,9 @@ import hospital.management.demo.repositories.ClinicalDataRepository;
 import hospital.management.demo.services.ClinicalDataService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +59,7 @@ public class ClinicalDataSeriveImpl implements ClinicalDataService {
         return clinicalDataRepository.findById(String.valueOf(clinical_data_id)).map(existingClinicalData -> {
             Optional.ofNullable(clinicalDataEntity.getClinical_record()).ifPresent(existingClinicalData::setClinical_record);
             return clinicalDataRepository.save(existingClinicalData);
-        }).orElseThrow(() -> new RuntimeException("Clinical Data does not exist"));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No clinical data is found"));
     }
 
     @Override

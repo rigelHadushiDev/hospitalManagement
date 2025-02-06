@@ -78,9 +78,12 @@ public class PatientServiceImpl implements PatientService {
             Optional.ofNullable(patientEntity.getPatient_last_name()).ifPresent(existingPatient::setPatient_last_name);
             Optional.ofNullable(patientEntity.getPatient_birthdate()).ifPresent(existingPatient::setPatient_birthdate);
             return patientRepository.save(existingPatient);
-        }).orElseThrow(() -> new RuntimeException("Patient does not exist"));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient does not exist."));
     }
 
-
+    @Override
+    public Page<PatientEntity> searchPatientsByFullName(String fullName, Pageable pageable) {
+        return patientRepository.searchByFullName(fullName, pageable);
+    }
 
 }

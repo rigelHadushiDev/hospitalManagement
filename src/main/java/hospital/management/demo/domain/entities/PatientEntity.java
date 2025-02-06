@@ -28,10 +28,8 @@ public class PatientEntity {
 
     private LocalDate patient_birthdate;
 
-    // Cascade only for persist and merge operations
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    // so that when we delete a patient that has an existing department is allowed by the foreign key
-    @JoinColumn(name = "department_id", nullable = true)
+    @ManyToOne()
+    @JoinColumn(name = "department_id")
     private DepartmentEntity departmentEntity;
 
 }
