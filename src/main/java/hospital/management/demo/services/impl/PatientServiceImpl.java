@@ -1,8 +1,10 @@
 package hospital.management.demo.services.impl;
 
 
+import hospital.management.demo.domain.entities.AdmissionStateEntity;
 import hospital.management.demo.domain.entities.DepartmentEntity;
 import hospital.management.demo.domain.entities.PatientEntity;
+import hospital.management.demo.repositories.AdmissionStateRepository;
 import hospital.management.demo.repositories.DepartmentRepository;
 import hospital.management.demo.repositories.PatientRepository;
 import hospital.management.demo.services.PatientService;
@@ -18,11 +20,14 @@ import java.util.Optional;
 public class PatientServiceImpl implements PatientService {
 
     private PatientRepository patientRepository;
-
     private DepartmentRepository departmentRepository;
-    public PatientServiceImpl(PatientRepository patientRepository, DepartmentRepository departmentRepository) {
+    private AdmissionStateRepository admissionStateRepository;
+
+    public PatientServiceImpl(PatientRepository patientRepository, DepartmentRepository departmentRepository,
+                              AdmissionStateRepository admissionStateRepository) {
         this.departmentRepository = departmentRepository;
         this.patientRepository = patientRepository;
+        this.admissionStateRepository = admissionStateRepository;
     }
 
     @Override
@@ -48,14 +53,22 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public void delete(Long patientId) {
-        patientRepository.deleteById(String.valueOf(patientId));
+
+        PatientEntity patient = patientRepository.findById(String.valueOf(patientId))
+               .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No patient found with this ID"));
+
+        if (!admissionStateRepository.findByPatientEntity(patient).isEmpty()) {
+          throw new ResponseStatusException(HttpStatus.CONFLICT, "Cannot delete patient. There is an admission state associated with it.");
+        }
+
+        patientRepository.delete(patient);
     }
 
     @Override
     public boolean isExists(Long patientId) {
         return patientRepository.existsById(String.valueOf(patientId));
     }
-
+    // in the patient we should also change in the partial update the departmentId of the foreign key
     @Override
     public PatientEntity partialUpdate(Long patientId, PatientEntity patientEntity) {
         patientEntity.setPatient_id(patientId);

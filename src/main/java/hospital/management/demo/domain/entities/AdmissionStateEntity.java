@@ -29,10 +29,10 @@ public class AdmissionStateEntity {
 
     private String reason = "";
 
-    private boolean discharge = false;
+    private Boolean discharge = false;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "patient_id")
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "patient_id", nullable = true)
     private PatientEntity patientEntity;
 
 }

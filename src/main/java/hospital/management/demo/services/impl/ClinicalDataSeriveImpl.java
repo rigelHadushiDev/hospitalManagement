@@ -24,6 +24,13 @@ public class ClinicalDataSeriveImpl implements ClinicalDataService {
         this.clinicalDataRepository = clinicalDataRepository;
     }
 
+
+    @Override
+    public ClinicalDataEntity save( ClinicalDataEntity clinicalDataEntity) {
+        return clinicalDataRepository.save(clinicalDataEntity);
+    }
+
+
     @Override
     public List<ClinicalDataEntity> findAll() {
         return StreamSupport.stream(clinicalDataRepository

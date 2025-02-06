@@ -1,6 +1,10 @@
 package hospital.management.demo.controllers;
+import hospital.management.demo.domain.dtos.AdmissionStateDto;
 import hospital.management.demo.domain.dtos.ClinicalDataDto;
+import hospital.management.demo.domain.dtos.DepartmentDto;
+import hospital.management.demo.domain.entities.AdmissionStateEntity;
 import hospital.management.demo.domain.entities.ClinicalDataEntity;
+import hospital.management.demo.domain.entities.DepartmentEntity;
 import hospital.management.demo.mappers.Mapper;
 import hospital.management.demo.services.ClinicalDataService;
 import org.springframework.data.domain.Page;
@@ -23,6 +27,13 @@ public class ClinicalDataController {
                                   Mapper<ClinicalDataEntity, ClinicalDataDto> clinicalDataMapper) {
         this.clinicalDataService = clinicalDataService;
         this.clinicalDataMapper = clinicalDataMapper;
+    }
+
+    @PostMapping
+    public ResponseEntity<ClinicalDataDto> createClinicalData(@RequestBody ClinicalDataDto clinicalDataDto) {
+        ClinicalDataEntity clinicalDataEntity = clinicalDataMapper.mapFrom(clinicalDataDto);
+        ClinicalDataEntity savedClinicalDataEntity = clinicalDataService.save(clinicalDataEntity);
+        return new ResponseEntity<>(clinicalDataMapper.mapTo(savedClinicalDataEntity), HttpStatus.CREATED);
     }
 
 

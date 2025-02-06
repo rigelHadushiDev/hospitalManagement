@@ -28,10 +28,10 @@ public class PatientEntity {
 
     private LocalDate patient_birthdate;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "department_id")
+    // Cascade only for persist and merge operations
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    // so that when we delete a patient that has an existing department is allowed by the foreign key
+    @JoinColumn(name = "department_id", nullable = true)
     private DepartmentEntity departmentEntity;
 
-    @OneToMany(mappedBy = "patientEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AdmissionStateEntity> admissionStateEntities = new HashSet<>();
 }

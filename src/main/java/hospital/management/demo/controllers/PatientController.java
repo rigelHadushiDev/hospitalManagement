@@ -27,7 +27,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<PatientDto> createDepartment(@RequestBody PatientDto patientDto) {
+    public ResponseEntity<PatientDto> createPatient(@RequestBody PatientDto patientDto) {
         PatientEntity patientEntity = patientMapper.mapFrom(patientDto);
         PatientEntity savedPatientEntity = patientService.save(patientEntity);
         return new ResponseEntity<>(patientMapper.mapTo(savedPatientEntity), HttpStatus.CREATED);
@@ -54,6 +54,7 @@ public class PatientController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    // in the patient we should also change in the partial update the departmentId of the foreign key
     @PatchMapping(path = "/{patient_id}")
     public ResponseEntity<PatientDto> partialUpdate(
             @PathVariable("patient_id") Long patient_id,
