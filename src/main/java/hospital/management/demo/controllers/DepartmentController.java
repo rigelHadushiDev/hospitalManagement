@@ -79,5 +79,4 @@ public class DepartmentController {
         Page<DepartmentEntity> departments = departmentService.searchDepartmentsByName(departmentName,pageable );
         return departments.map(departmentMapper::mapTo);
     }
-
 }
