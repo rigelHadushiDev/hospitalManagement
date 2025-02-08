@@ -22,4 +22,5 @@ public interface AdmissionStateService {
     AdmissionStateEntity partialUpdate(Long admission_state_id, AdmissionStateEntity admissionStateEntity);
 
 
+    AdmissionStateEntity dischargeAdmission(Long admissionStateId, AdmissionStateEntity.Reason reason);
 }

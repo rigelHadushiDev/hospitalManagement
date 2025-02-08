@@ -69,5 +69,16 @@ public class AdmissionStateController {
                 HttpStatus.OK);
     }
 
+    @PatchMapping("/discharge/{admission_state_id}/{reason}")
+    public ResponseEntity<AdmissionStateDto> dischargeAdmission(
+            @PathVariable("admission_state_id") Long admissionStateId,
+            @PathVariable("reason") AdmissionStateEntity.Reason reason) {
+
+        AdmissionStateEntity dischargedAdmissionEntity = admissionStateService.dischargeAdmission(admissionStateId, reason);
+        return new ResponseEntity<>(admissionStateMapper.mapTo(dischargedAdmissionEntity), HttpStatus.OK);
+    }
+
+
+
 
 }

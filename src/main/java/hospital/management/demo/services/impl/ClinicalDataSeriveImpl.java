@@ -71,4 +71,10 @@ public class ClinicalDataSeriveImpl implements ClinicalDataService {
     public void delete(Long clinical_data_id) {
         clinicalDataRepository.deleteById(String.valueOf(clinical_data_id));
     }
+
+
+    @Override
+    public Page<ClinicalDataEntity> searchByPatientId(String patientId, Pageable pageable) {
+        return clinicalDataRepository.findByPatientId(Long.valueOf(patientId), pageable);
+    }
 }
