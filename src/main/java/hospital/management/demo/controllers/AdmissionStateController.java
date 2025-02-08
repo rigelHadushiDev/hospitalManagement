@@ -77,8 +77,4 @@ public class AdmissionStateController {
         AdmissionStateEntity dischargedAdmissionEntity = admissionStateService.dischargeAdmission(admissionStateId, reason);
         return new ResponseEntity<>(admissionStateMapper.mapTo(dischargedAdmissionEntity), HttpStatus.OK);
     }
-
-
-
-
 }
