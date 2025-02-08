@@ -6,10 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @Entity
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Table(name = "clinical_data")
 public class ClinicalDataEntity {
@@ -21,6 +21,6 @@ public class ClinicalDataEntity {
     private String clinical_record;
 
     @OneToOne
-    @JoinColumn(name = "admission_state_id", nullable = true)
+    @JoinColumn(name = "admission_state_id")
     private AdmissionStateEntity admissionStateEntity;
 }

@@ -21,5 +21,5 @@ public interface DepartmentService {
     boolean isExists(Long department_id);
 
     DepartmentEntity partialUpdate(Long department_id, DepartmentEntity departmentEntity);
-
+    Page<DepartmentEntity> searchDepartmentsByName(String departmentName, Pageable pageable);
 }

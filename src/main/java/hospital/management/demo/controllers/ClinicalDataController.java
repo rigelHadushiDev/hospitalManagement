@@ -74,4 +74,13 @@ public class ClinicalDataController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/searchByPatient")
+    public Page<ClinicalDataDto> searchClinicalDataByPatient(
+            @RequestParam("patientId") String patientId,
+            Pageable pageable) {
+
+        Page<ClinicalDataEntity> clinicalData = clinicalDataService.searchByPatientId(patientId, pageable);
+        return clinicalData.map(clinicalDataMapper::mapTo);
+    }
+
 }

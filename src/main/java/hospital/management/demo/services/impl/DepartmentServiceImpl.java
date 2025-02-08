@@ -79,6 +79,11 @@ public class DepartmentServiceImpl implements DepartmentService {
             Optional.ofNullable(departmentEntity.getDepartment_name()).ifPresent(existingDepartment::setDepartment_name);
             Optional.ofNullable(departmentEntity.getDepartment_code()).ifPresent(existingDepartment::setDepartment_code);
             return departmentRepository.save(existingDepartment);
-        }).orElseThrow(() -> new RuntimeException("Department does not exist"));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department does not exist"));
+    }
+
+    @Override
+    public Page<DepartmentEntity> searchDepartmentsByName(String departmentName, Pageable pageable) {
+        return departmentRepository.searchByDepartmentName(departmentName, pageable);
     }
 }

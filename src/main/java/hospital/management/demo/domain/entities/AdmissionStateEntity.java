@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Data
 @Entity
 @AllArgsConstructor
@@ -27,13 +26,18 @@ public class AdmissionStateEntity {
 
     private String cause = "";
 
-    private String reason = "";
+    @Enumerated(EnumType.STRING)
+    private Reason reason = null;
 
     private Boolean discharge = false;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "patient_id", nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
     private PatientEntity patientEntity;
 
+    public enum Reason {
+        DEATH,
+        HEALTHY,
+        TRANSFERRED
+    }
 }
-

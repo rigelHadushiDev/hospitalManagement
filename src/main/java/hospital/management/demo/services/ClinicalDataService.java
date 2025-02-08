@@ -25,4 +25,8 @@ public interface ClinicalDataService {
     ClinicalDataEntity fullUpdate(Long clinicalDataId, ClinicalDataEntity clinicalDataEntity);
 
     void delete(Long clinicalDataId);
+
+    Page<ClinicalDataEntity> searchByPatientId(String patientId, Pageable pageable);
+
+
 }

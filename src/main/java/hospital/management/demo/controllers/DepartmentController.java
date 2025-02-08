@@ -73,5 +73,12 @@ public class DepartmentController {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/searchDepartment")
+    public Page<DepartmentDto> searchDepartmentsByName(
+            @RequestParam("departmentName") String departmentName,
+            Pageable pageable) {
+        Page<DepartmentEntity> departments = departmentService.searchDepartmentsByName(departmentName,pageable );
+        return departments.map(departmentMapper::mapTo);
+    }
 
 }

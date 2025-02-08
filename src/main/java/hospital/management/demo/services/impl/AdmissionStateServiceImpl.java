@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -104,6 +105,17 @@ public class AdmissionStateServiceImpl implements AdmissionStateService {
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Admission State does not exist"));
     }
 
+    @Override
+    public AdmissionStateEntity dischargeAdmission(Long admissionStateId, AdmissionStateEntity.Reason reason) {
 
+        AdmissionStateEntity admission = admissionStateRepository.findById(String.valueOf(admissionStateId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No admission found"));
 
+        admission.setReason(reason);
+        admission.setDischarge(true);
+        admission.setExiting_date( LocalDateTime.now());
+
+        return admissionStateRepository.save(admission);
+
+    }
 }

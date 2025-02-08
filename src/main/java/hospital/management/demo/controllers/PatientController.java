@@ -33,6 +33,12 @@ public class PatientController {
         return new ResponseEntity<>(patientMapper.mapTo(savedPatientEntity), HttpStatus.CREATED);
     }
 
+    @GetMapping("/searchPatient")
+    public Page<PatientDto> searchPatientsByFullName( @RequestParam("fullName") String fullName, Pageable pageable) {
+        Page<PatientEntity> patients = patientService.searchPatientsByFullName(fullName, pageable);
+        return patients.map(patientMapper::mapTo);
+    }
+
     @GetMapping
     public Page<PatientDto> listPatient(Pageable pageable) {
         Page<PatientEntity> patients = patientService.findAll(pageable);
