@@ -118,4 +118,14 @@ public class AdmissionStateServiceImpl implements AdmissionStateService {
         return admissionStateRepository.save(admission);
 
     }
+
+
+    @Override
+    public Page<AdmissionStateEntity> searchByPatientId(String patientId, Pageable pageable) {
+        PatientEntity patient = patientRepository.findById(String.valueOf(patientId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No patient found with this ID"));
+
+
+        return admissionStateRepository.findByPatientId(Long.valueOf(patientId),pageable);
+    }
 }

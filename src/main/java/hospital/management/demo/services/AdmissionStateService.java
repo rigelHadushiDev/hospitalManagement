@@ -23,4 +23,6 @@ public interface AdmissionStateService {
 
 
     AdmissionStateEntity dischargeAdmission(Long admissionStateId, AdmissionStateEntity.Reason reason);
+
+    Page<AdmissionStateEntity> searchByPatientId(String patientId, Pageable pageable);
 }

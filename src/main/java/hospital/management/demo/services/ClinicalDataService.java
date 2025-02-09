@@ -16,7 +16,6 @@ public interface ClinicalDataService {
 
     Page<ClinicalDataEntity> findAll(Pageable pageable);
 
-    List<ClinicalDataEntity> findAll();
 
     Optional<ClinicalDataEntity> findOne(Long clinicalDataId);
 

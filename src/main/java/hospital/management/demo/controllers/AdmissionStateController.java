@@ -1,7 +1,9 @@
 package hospital.management.demo.controllers;
 
 import hospital.management.demo.domain.dtos.AdmissionStateDto;
+import hospital.management.demo.domain.dtos.ClinicalDataDto;
 import hospital.management.demo.domain.entities.AdmissionStateEntity;
+import hospital.management.demo.domain.entities.ClinicalDataEntity;
 import hospital.management.demo.mappers.Mapper;
 import hospital.management.demo.services.AdmissionStateService;
 import org.springframework.data.domain.Page;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -43,7 +46,7 @@ public class AdmissionStateController {
         return foundAdmission.map(admissionStateEntity -> {
             AdmissionStateDto admissionStateDto = admissionStateMapper.mapTo(admissionStateEntity);
             return new ResponseEntity<>(admissionStateDto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Admission State does not exist"));
     }
 
 
@@ -77,4 +80,16 @@ public class AdmissionStateController {
         AdmissionStateEntity dischargedAdmissionEntity = admissionStateService.dischargeAdmission(admissionStateId, reason);
         return new ResponseEntity<>(admissionStateMapper.mapTo(dischargedAdmissionEntity), HttpStatus.OK);
     }
+
+
+    @GetMapping("/searchByPatient")
+    public Page<AdmissionStateDto> searchAdmissionSateByPatient(
+            @RequestParam("patientId") String patientId,
+            Pageable pageable) {
+
+        Page<AdmissionStateEntity> admisisonSate = admissionStateService.searchByPatientId(patientId, pageable);
+        return admisisonSate.map(admissionStateMapper::mapTo);
+    }
+
+
 }
