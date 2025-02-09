@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.Optional;
@@ -51,7 +52,7 @@ public class PatientController {
         return foundPatient.map(patientEntity -> {
             PatientDto patientDto = patientMapper.mapTo(patientEntity);
             return new ResponseEntity<>(patientDto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient does not exist"));
     }
 
     @DeleteMapping(path = "/{patient_id}")

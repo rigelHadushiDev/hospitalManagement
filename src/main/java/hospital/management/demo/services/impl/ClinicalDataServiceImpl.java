@@ -1,9 +1,6 @@
 package hospital.management.demo.services.impl;
 
-import hospital.management.demo.domain.dtos.ClinicalDataDto;
-import hospital.management.demo.domain.entities.AdmissionStateEntity;
 import hospital.management.demo.domain.entities.ClinicalDataEntity;
-import hospital.management.demo.domain.entities.DepartmentEntity;
 import hospital.management.demo.repositories.ClinicalDataRepository;
 import hospital.management.demo.services.ClinicalDataService;
 import org.springframework.data.domain.Page;
@@ -18,11 +15,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class ClinicalDataSeriveImpl implements ClinicalDataService {
+public class ClinicalDataServiceImpl implements ClinicalDataService {
 
     private ClinicalDataRepository clinicalDataRepository;
 
-    public ClinicalDataSeriveImpl(ClinicalDataRepository clinicalDataRepository) {
+    public ClinicalDataServiceImpl(ClinicalDataRepository clinicalDataRepository) {
         this.clinicalDataRepository = clinicalDataRepository;
     }
 
@@ -32,15 +29,6 @@ public class ClinicalDataSeriveImpl implements ClinicalDataService {
         return clinicalDataRepository.save(clinicalDataEntity);
     }
 
-
-    @Override
-    public List<ClinicalDataEntity> findAll() {
-        return StreamSupport.stream(clinicalDataRepository
-                                .findAll()
-                                .spliterator(),
-                        false)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public Page<ClinicalDataEntity> findAll(Pageable pageable) {
@@ -69,6 +57,9 @@ public class ClinicalDataSeriveImpl implements ClinicalDataService {
 
     @Override
     public void delete(Long clinical_data_id) {
+        ClinicalDataEntity clinicalRecord = clinicalDataRepository.findById(String.valueOf(clinical_data_id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Clinical Data not found."));
+
         clinicalDataRepository.deleteById(String.valueOf(clinical_data_id));
     }
 

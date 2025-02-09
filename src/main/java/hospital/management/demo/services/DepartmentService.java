@@ -8,7 +8,6 @@ import java.util.Optional;
 
 public interface DepartmentService {
 
-    List<DepartmentEntity> findAll();
 
     Page<DepartmentEntity> findAll(Pageable pageable);
 

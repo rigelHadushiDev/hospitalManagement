@@ -32,21 +32,11 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.save(departmentEntity);
     }
 
-    @Override
-    public List<DepartmentEntity> findAll() {
-        return StreamSupport.stream(departmentRepository
-                                .findAll()
-                                .spliterator(),
-                        false)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public Page<DepartmentEntity> findAll(Pageable pageable) {
         return departmentRepository.findAll(pageable);
     }
-
-
 
     @Override
     public Optional<DepartmentEntity> findOne(Long department_id) {

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.Optional;
 
 @RestController()
@@ -45,7 +47,7 @@ public class DepartmentController {
         return foundDepartment.map(departmentEntity -> {
             DepartmentDto departmentDto = departmentMapper.mapTo(departmentEntity);
             return new ResponseEntity<>(departmentDto, HttpStatus.OK);
-        }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department does not exist"));
     }
 
 
@@ -61,10 +63,6 @@ public class DepartmentController {
             @PathVariable("department_id") Long department_id,
             @RequestBody DepartmentDto departmentDto
     ) {
-        if(!departmentService.isExists(department_id)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
         DepartmentEntity departmentEntity = departmentMapper.mapFrom(departmentDto);
         DepartmentEntity updatedDepartment = departmentService.partialUpdate(department_id, departmentEntity);
         return new ResponseEntity<>(
