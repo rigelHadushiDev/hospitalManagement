@@ -281,6 +281,8 @@ public class AdmissionStateServiceUnitTests {
         Page<AdmissionStateEntity> result = underTest.searchByPatientId(patientId, pageable);
 
         assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals(admissionStates, result.getContent().get(0));
         verify(patientRepository, times(1)).findById(patientId);
         verify(admissionStateRepository, times(1)).findByPatientId(123L, pageable);
     }
