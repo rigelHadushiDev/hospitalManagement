@@ -38,7 +38,7 @@ public class DepartmentServiceUnitTests {
     @InjectMocks private DepartmentServiceImpl underTest;
 
     @Test
-    public void testThatListBooksReturnsFromRepository() {
+    public void testThatFindAllReturnsFromRepository() {
         final Pageable pageable = Mockito.mock(Pageable.class);
         final Page<DepartmentEntity> findAllResult =
                 new PageImpl<>(List.of(TestDataUtil.createDepartmentEntity()), pageable, 1);
@@ -100,13 +100,31 @@ public class DepartmentServiceUnitTests {
         DepartmentEntity department = TestDataUtil.createDepartmentEntity();
         Long deptId = department.getDepartment_id();
 
-        when(departmentRepository.findById(String.valueOf(deptId))).thenReturn(Optional.of(department));
+        when(departmentRepository.findById(String.valueOf(deptId)))
+                .thenReturn(Optional.of(department));
 
         Optional<DepartmentEntity> result = underTest.findOne(deptId);
 
         assertTrue(result.isPresent());
         assertEquals(department, result.get());
         verify(departmentRepository).findById(String.valueOf(deptId));
+    }
+
+    @Test
+    public void testFindOne_DepartmentDoesNotExists() {
+
+
+        Long depId = 32L;
+
+        when(departmentRepository.findById(String.valueOf(depId)))
+                .thenReturn(Optional.empty());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class,
+                () -> underTest.findOne(depId));
+
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
+        assertEquals("Department does not exist", exception.getReason());
+        verify(departmentRepository, times(1)).findById(String.valueOf(depId));
     }
 
     @Test
@@ -138,7 +156,8 @@ public class DepartmentServiceUnitTests {
         when(departmentRepository.findById(String.valueOf(departmentId)))
                 .thenReturn(Optional.of(existingDepartment));
         when(departmentRepository.save(any(DepartmentEntity.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+                .thenAnswer(invocation
+                        -> invocation.getArgument(0));
 
 
         DepartmentEntity updatedDepartment = underTest.partialUpdate(departmentId, updateRequest);
