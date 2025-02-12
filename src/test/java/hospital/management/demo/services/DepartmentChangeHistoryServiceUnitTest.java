@@ -22,7 +22,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-/** Unit tests for {@link hospital.management.demo.services.impl.DepartmentServiceImpl}. */
+/** Unit tests for {@link hospital.management.demo.services.impl.DepartmentChangeHistoryServiceImpl}. */
 @ExtendWith(MockitoExtension.class)
 public class DepartmentChangeHistoryServiceUnitTest {
 
