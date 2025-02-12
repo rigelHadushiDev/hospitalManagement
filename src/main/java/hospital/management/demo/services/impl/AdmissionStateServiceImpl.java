@@ -70,7 +70,8 @@ public class AdmissionStateServiceImpl implements AdmissionStateService {
 
     @Override
     public Optional<AdmissionStateEntity> findOne(Long admission_state_id) {
-        return admissionStateRepository.findById(String.valueOf(admission_state_id));
+        return Optional.ofNullable(admissionStateRepository.findById(String.valueOf(admission_state_id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Admission State does not exist")));
     }
 
     @Override
@@ -122,9 +123,8 @@ public class AdmissionStateServiceImpl implements AdmissionStateService {
 
     @Override
     public Page<AdmissionStateEntity> searchByPatientId(String patientId, Pageable pageable) {
-        PatientEntity patient = patientRepository.findById(String.valueOf(patientId))
+        patientRepository.findById(String.valueOf(patientId))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No patient found with this ID"));
-
 
         return admissionStateRepository.findByPatientId(Long.valueOf(patientId),pageable);
     }
