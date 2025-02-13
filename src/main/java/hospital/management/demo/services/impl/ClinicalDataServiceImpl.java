@@ -1,6 +1,9 @@
 package hospital.management.demo.services.impl;
 
+import hospital.management.demo.domain.entities.AdmissionStateEntity;
 import hospital.management.demo.domain.entities.ClinicalDataEntity;
+import hospital.management.demo.domain.entities.DepartmentEntity;
+import hospital.management.demo.repositories.AdmissionStateRepository;
 import hospital.management.demo.repositories.ClinicalDataRepository;
 import hospital.management.demo.services.ClinicalDataService;
 import org.springframework.data.domain.Page;
@@ -19,13 +22,30 @@ public class ClinicalDataServiceImpl implements ClinicalDataService {
 
     private ClinicalDataRepository clinicalDataRepository;
 
-    public ClinicalDataServiceImpl(ClinicalDataRepository clinicalDataRepository) {
+    private AdmissionStateRepository admissionStateRepository;
+
+    public ClinicalDataServiceImpl(ClinicalDataRepository clinicalDataRepository
+    ,AdmissionStateRepository admissionStateRepository) {
         this.clinicalDataRepository = clinicalDataRepository;
+        this.admissionStateRepository = admissionStateRepository;
     }
 
 
     @Override
     public ClinicalDataEntity save( ClinicalDataEntity clinicalDataEntity) {
+
+        if (clinicalDataEntity.getAdmissionStateEntity() != null) {
+            Long admissionSateId = clinicalDataEntity.getAdmissionStateEntity().getAdmission_state_id();
+            AdmissionStateEntity admissionStateEntity = admissionStateRepository.findById(String.valueOf(admissionSateId))
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Admission State not found"));
+
+            List<ClinicalDataEntity> existingClinicalDataList = clinicalDataRepository.findByAdmissionStateEntity(admissionStateEntity);
+            if (!existingClinicalDataList.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "A ClinicalData with this AdmissionState associated does already exist");
+            }
+
+            clinicalDataEntity.setAdmissionStateEntity(admissionStateEntity);
+        }
         return clinicalDataRepository.save(clinicalDataEntity);
     }
 
@@ -37,7 +57,8 @@ public class ClinicalDataServiceImpl implements ClinicalDataService {
 
     @Override
     public Optional<ClinicalDataEntity> findOne(Long clinical_data_id) {
-        return clinicalDataRepository.findById(String.valueOf(clinical_data_id));
+        return Optional.ofNullable(clinicalDataRepository.findById(String.valueOf(clinical_data_id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Clinical Data Not Found")));
     }
 
     @Override
@@ -57,7 +78,7 @@ public class ClinicalDataServiceImpl implements ClinicalDataService {
 
     @Override
     public void delete(Long clinical_data_id) {
-        ClinicalDataEntity clinicalRecord = clinicalDataRepository.findById(String.valueOf(clinical_data_id))
+        clinicalDataRepository.findById(String.valueOf(clinical_data_id))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Clinical Data not found."));
 
         clinicalDataRepository.deleteById(String.valueOf(clinical_data_id));

@@ -2,6 +2,7 @@ package hospital.management.demo;
 
 
 import hospital.management.demo.domain.entities.AdmissionStateEntity;
+import hospital.management.demo.domain.entities.ClinicalDataEntity;
 import hospital.management.demo.domain.entities.DepartmentEntity;
 import hospital.management.demo.domain.entities.PatientEntity;
 
@@ -50,7 +51,7 @@ public final class TestDataUtil {
     }
 
     public static AdmissionStateEntity createAdmissionStateEntityB() {
-        return createAdmissionStateEntity(null);
+        return createAdmissionStateEntityB(null);
     }
 
 
@@ -70,9 +71,6 @@ public final class TestDataUtil {
 
         return builder.build();
     }
-
-
-
 
     public static PatientEntity createPatient() {
         return createPatient(null);
@@ -110,6 +108,39 @@ public final class TestDataUtil {
         return builder.build();
     }
 
+    // create clinical Data test helper methods
 
+
+    public static ClinicalDataEntity createClinicalData() {
+        return createClinicalData(null);
+    }
+
+    public static ClinicalDataEntity createClinicalData(AdmissionStateEntity admissionStateEntity) {
+        ClinicalDataEntity.ClinicalDataEntityBuilder builder = ClinicalDataEntity.builder()
+                .clinical_data_id(1L)
+                .clinical_record("Un jam Klajdi.");
+
+        if (admissionStateEntity != null) {
+            builder.admissionStateEntity(admissionStateEntity);
+        }
+
+        return builder.build();
+    }
+
+    public static ClinicalDataEntity createClinicalDataB() {
+        return createClinicalDataB(null);
+    }
+
+    public static ClinicalDataEntity createClinicalDataB(AdmissionStateEntity admissionStateEntity) {
+        ClinicalDataEntity.ClinicalDataEntityBuilder builder = ClinicalDataEntity.builder()
+                .clinical_data_id(2L)
+                .clinical_record("Un jam Rigeli.");
+
+        if (admissionStateEntity != null) {
+            builder.admissionStateEntity(admissionStateEntity);
+        }
+
+        return builder.build();
+    }
 
 }

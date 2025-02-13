@@ -61,7 +61,8 @@ public class PatientServiceUnitTests {
     public void testThatFindAllPatientsReturnsFromRepository() {
         final Pageable pageable = Mockito.mock(Pageable.class);
         final Page<PatientEntity> findAllResult =
-                new PageImpl<>(List.of(TestDataUtil.createPatient()), pageable, 1);
+                new PageImpl<>(List.of(TestDataUtil.createPatient()),
+                        pageable, 1);
 
         when(patientRepository.findAll(eq(pageable))).thenReturn(findAllResult);
         final Page<PatientEntity> findAllPatientsResults = underTest.findAll(pageable);
@@ -152,7 +153,7 @@ public class PatientServiceUnitTests {
         Long patId = updatePatient.getPatient_id();
 
         DepartmentEntity departmentB = TestDataUtil.createDepartmentEntityB();
-        PatientEntity existingPatient = TestDataUtil.createPatient(departmentB);
+        PatientEntity existingPatient = TestDataUtil.createPatientB(departmentB);
 
         existingPatient.setPatient_id(patId);
         existingPatient.setDepartmentEntity(updatePatient.getDepartmentEntity());

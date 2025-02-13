@@ -1,10 +1,6 @@
 package hospital.management.demo.controllers;
-import hospital.management.demo.domain.dtos.AdmissionStateDto;
 import hospital.management.demo.domain.dtos.ClinicalDataDto;
-import hospital.management.demo.domain.dtos.DepartmentDto;
-import hospital.management.demo.domain.entities.AdmissionStateEntity;
 import hospital.management.demo.domain.entities.ClinicalDataEntity;
-import hospital.management.demo.domain.entities.DepartmentEntity;
 import hospital.management.demo.mappers.Mapper;
 import hospital.management.demo.services.ClinicalDataService;
 import org.springframework.data.domain.Page;
@@ -12,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -45,12 +40,12 @@ public class ClinicalDataController {
     }
 
     @GetMapping("/{clinical_data_id}")
-    public ResponseEntity<ClinicalDataDto> getClinicalData(@PathVariable("clinical_data_id") Long clinical_data_id) {
+    public Optional<ResponseEntity<ClinicalDataDto>> getClinicalData(@PathVariable("clinical_data_id") Long clinical_data_id) {
         Optional<ClinicalDataEntity> foundClinicalData = clinicalDataService.findOne(clinical_data_id);
         return foundClinicalData.map(ClinicalDataEntity -> {
             ClinicalDataDto clinicalDataDto = clinicalDataMapper.mapTo(ClinicalDataEntity);
             return new ResponseEntity<>(clinicalDataDto, HttpStatus.OK);
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Clinical Data does not exist"));
+        });
     }
 
     @PatchMapping(path = "/{clinical_data_id}")
