@@ -53,7 +53,6 @@ public final class TestDataUtil {
         return createAdmissionStateEntity(null);
     }
 
-
     public static AdmissionStateEntity createAdmissionStateEntityB(PatientEntity patientEntity) {
         AdmissionStateEntity.AdmissionStateEntityBuilder builder = AdmissionStateEntity
                 .builder()
