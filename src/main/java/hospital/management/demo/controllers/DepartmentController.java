@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -43,12 +42,12 @@ public class DepartmentController {
 
 
     @GetMapping(path = "/{department_id}")
-    public ResponseEntity<DepartmentDto> getDepartment(@PathVariable("department_id") Long department_id) {
+    public Optional<ResponseEntity<DepartmentDto>> getDepartment(@PathVariable("department_id") Long department_id) {
         Optional<DepartmentEntity> foundDepartment = departmentService.findOne(department_id);
         return foundDepartment.map(departmentEntity -> {
             DepartmentDto departmentDto = departmentMapper.mapTo(departmentEntity);
             return new ResponseEntity<>(departmentDto, HttpStatus.OK);
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department does not exist"));
+        });
     }
 
 

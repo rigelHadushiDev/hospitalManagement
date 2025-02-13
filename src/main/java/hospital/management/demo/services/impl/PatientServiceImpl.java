@@ -57,7 +57,8 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Optional<PatientEntity> findOne(Long patientId) {
-        return  patientRepository.findById(String.valueOf(patientId));
+        return Optional.ofNullable(patientRepository.findById(String.valueOf(patientId))
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient does not exist")));
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.Optional;
@@ -47,12 +46,12 @@ public class PatientController {
     }
 
     @GetMapping(path = "/{patient_id}")
-    public ResponseEntity<PatientDto> getPatient(@PathVariable("patient_id") Long patient_id) {
+    public Optional<ResponseEntity<PatientDto>> getPatient(@PathVariable("patient_id") Long patient_id) {
         Optional<PatientEntity> foundPatient = patientService.findOne(patient_id);
         return foundPatient.map(patientEntity -> {
             PatientDto patientDto = patientMapper.mapTo(patientEntity);
             return new ResponseEntity<>(patientDto, HttpStatus.OK);
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Patient does not exist"));
+        });
     }
 
     @DeleteMapping(path = "/{patient_id}")
@@ -61,7 +60,6 @@ public class PatientController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    // in the patient we should also change in the partial update the departmentId of the foreign key
     @PatchMapping(path = "/{patient_id}")
     public ResponseEntity<PatientDto> partialUpdate(
             @PathVariable("patient_id") Long patient_id,

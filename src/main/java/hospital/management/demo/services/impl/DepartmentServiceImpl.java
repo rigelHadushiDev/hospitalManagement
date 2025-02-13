@@ -32,7 +32,6 @@ public class DepartmentServiceImpl implements DepartmentService {
         return departmentRepository.save(departmentEntity);
     }
 
-
     @Override
     public Page<DepartmentEntity> findAll(Pageable pageable) {
         return departmentRepository.findAll(pageable);
@@ -40,7 +39,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Optional<DepartmentEntity> findOne(Long department_id) {
-        return departmentRepository.findById(String.valueOf(department_id));
+        return Optional.ofNullable(departmentRepository.findById(String.valueOf(department_id))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Department does not exist")));
     }
 
     @Override
