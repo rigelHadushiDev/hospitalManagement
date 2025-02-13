@@ -43,10 +43,8 @@ public class AdmissionStateController {
     @GetMapping(path = "/{admission_state_id}")
     public ResponseEntity<AdmissionStateDto> getAdmissionState(@PathVariable("admission_state_id") Long admission_state_id) {
         Optional<AdmissionStateEntity> foundAdmission = admissionStateService.findOne(admission_state_id);
-        return foundAdmission.map(admissionStateEntity -> {
-            AdmissionStateDto admissionStateDto = admissionStateMapper.mapTo(admissionStateEntity);
-            return new ResponseEntity<>(admissionStateDto, HttpStatus.OK);
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Admission State does not exist"));
+        AdmissionStateDto admissionStateDto = admissionStateMapper.mapTo(foundAdmission.get());
+        return new ResponseEntity<>(admissionStateDto, HttpStatus.OK);
     }
 
 

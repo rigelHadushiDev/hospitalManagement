@@ -60,7 +60,6 @@ public class PatientController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    // in the patient we should also change in the partial update the departmentId of the foreign key
     @PatchMapping(path = "/{patient_id}")
     public ResponseEntity<PatientDto> partialUpdate(
             @PathVariable("patient_id") Long patient_id,
