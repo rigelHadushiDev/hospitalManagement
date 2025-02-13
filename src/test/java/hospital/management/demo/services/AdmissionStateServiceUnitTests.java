@@ -209,9 +209,9 @@ public class AdmissionStateServiceUnitTests {
 
         AdmissionStateEntity result = underTest.partialUpdate(admissionStateId, updatedAdmissionState);
 
-        assertEquals(admissionStateId, updatedAdmissionState.getAdmission_state_id());
-        assertEquals("Routine Checkup", updatedAdmissionState.getCause());
-        assertEquals(AdmissionStateEntity.Reason.HEALTHY, updatedAdmissionState.getReason());
+        assertEquals(updatedAdmissionState.getAdmission_state_id(), result.getAdmission_state_id());
+        assertEquals(updatedAdmissionState.getCause(), result.getCause());
+        assertEquals(updatedAdmissionState.getReason(), result.getReason());
 
         verify(admissionStateRepository, times(1)).findById(String.valueOf(admissionStateId));
         verify(admissionStateRepository, times(1)).save(existingAdmissionState);

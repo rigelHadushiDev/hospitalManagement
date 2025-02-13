@@ -191,5 +191,4 @@ public class DepartmentServiceUnitTests {
         verify(departmentRepository, times(1)).findById(String.valueOf(departmentId));
         verify(departmentRepository, never()).save(any());
     }
-
 }
