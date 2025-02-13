@@ -27,7 +27,6 @@ public final class TestDataUtil {
                 .build();
     }
 
-
     public static AdmissionStateEntity createAdmissionStateEntity() {
         return createAdmissionStateEntity(null);
     }
