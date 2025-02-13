@@ -179,7 +179,7 @@ public class AdmissionStateServiceUnitTests {
         AdmissionStateEntity updateAdmissionState = TestDataUtil.createAdmissionStateEntity();
 
         when(admissionStateRepository.findById(String.valueOf(admissionStateId)))
-            .thenReturn(Optional.empty());
+                .thenReturn(Optional.empty());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
             underTest.partialUpdate(admissionStateId, updateAdmissionState);
