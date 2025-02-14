@@ -58,7 +58,8 @@ public class ClinicalDataController {
         }
 
         ClinicalDataEntity clinicalDataEntity = clinicalDataMapper.mapFrom(clinicalDataDto);
-        ClinicalDataEntity updatedClinicalData = clinicalDataService.fullUpdate(clinical_data_id, clinicalDataEntity);
+        ClinicalDataEntity updatedClinicalData = clinicalDataService.partialUpdate(clinical_data_id,
+                clinicalDataEntity);
         return new ResponseEntity<>(
                 clinicalDataMapper.mapTo(updatedClinicalData),
                 HttpStatus.OK);

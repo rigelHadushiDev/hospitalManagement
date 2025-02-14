@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -190,6 +192,26 @@ public class DepartmentServiceUnitTests {
 
         verify(departmentRepository, times(1)).findById(String.valueOf(departmentId));
         verify(departmentRepository, never()).save(any());
+    }
+
+    @Test
+    void testSearchDepartmentsByName() {
+
+        String departmentName = "Surgery Department";
+        Pageable pageable = PageRequest.of(0, 10);
+
+        DepartmentEntity dept1 = TestDataUtil.createDepartmentEntity();
+
+        List<DepartmentEntity> departmentList = Arrays.asList(dept1);
+        Page<DepartmentEntity> expectedPage = new PageImpl<>(departmentList, pageable, departmentList.size());
+
+        when(departmentRepository.searchByDepartmentName(departmentName, pageable))
+                .thenReturn(expectedPage);
+
+        Page<DepartmentEntity> resultPage = underTest.searchDepartmentsByName(departmentName, pageable);
+
+        assertEquals(expectedPage, resultPage);
+        verify(departmentRepository).searchByDepartmentName(departmentName, pageable);
     }
 
 }

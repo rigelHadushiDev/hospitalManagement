@@ -62,14 +62,39 @@ public class ClinicalDataServiceImpl implements ClinicalDataService {
     }
 
     @Override
-    public ClinicalDataEntity fullUpdate(Long clinical_data_id, ClinicalDataEntity clinicalDataEntity) {
+    public ClinicalDataEntity partialUpdate(Long clinical_data_id, ClinicalDataEntity clinicalDataEntity) {
         clinicalDataEntity.setClinical_data_id(clinical_data_id);
 
         return clinicalDataRepository.findById(String.valueOf(clinical_data_id)).map(existingClinicalData -> {
-            Optional.ofNullable(clinicalDataEntity.getClinical_record()).ifPresent(existingClinicalData::setClinical_record);
+            Optional.ofNullable(clinicalDataEntity.getClinical_record())
+                    .ifPresent(existingClinicalData::setClinical_record);
+
+            if (clinicalDataEntity.getAdmissionStateEntity() != null &&
+                    clinicalDataEntity.getAdmissionStateEntity().getAdmission_state_id() != null) {
+
+                Long newAdmissionStateId = clinicalDataEntity.getAdmissionStateEntity().getAdmission_state_id();
+                if (existingClinicalData.getAdmissionStateEntity() == null ||
+                        !newAdmissionStateId.equals(existingClinicalData.getAdmissionStateEntity().getAdmission_state_id())) {
+
+                    List<ClinicalDataEntity> clinicalDataWithNewAdmissionState =
+                            clinicalDataRepository.findByAdmissionStateEntity(clinicalDataEntity.getAdmissionStateEntity());
+
+                    boolean conflict = clinicalDataWithNewAdmissionState.stream()
+                            .anyMatch(cd -> !cd.getClinical_data_id().equals(clinical_data_id));
+                    if (conflict) {
+                        throw new ResponseStatusException(HttpStatus.CONFLICT,
+                                "This admission state record already has a clinical data associated.");
+                    }
+
+                    AdmissionStateEntity newAdmissionState = admissionStateRepository.findById(String.valueOf(newAdmissionStateId))
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "AdmissionState Not Found"));
+                    existingClinicalData.setAdmissionStateEntity(newAdmissionState);
+                }
+            }
             return clinicalDataRepository.save(existingClinicalData);
         }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No clinical data is found"));
     }
+
 
     @Override
     public boolean isExists(Long clinical_data_id) {

@@ -21,7 +21,7 @@ public interface ClinicalDataService {
 
     boolean isExists(Long clinicalDataId);
 
-    ClinicalDataEntity fullUpdate(Long clinicalDataId, ClinicalDataEntity clinicalDataEntity);
+    ClinicalDataEntity partialUpdate(Long clinicalDataId, ClinicalDataEntity clinicalDataEntity);
 
     void delete(Long clinicalDataId);
 
