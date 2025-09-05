@@ -107,13 +107,13 @@ The system is built on a **layered architecture**:
 ## UML Diagrams
 
 - Patient UML Diagram  
-  ![Patient UML](src/docs/PatientUML.png)
+  ![Patient UML](src/docs/uml/PatientUML.png)
 
 - Department UML Diagram  
-  ![Department UML](src/docs/DepartmentUML.png)
+  ![Department UML](src/docs/uml/DepartmentUML.png)
 
 - Entities UML Diagram  
-  ![Entities UML](src/docs/EntitiesUML.png)
+  ![Entities UML](src/docs/uml/EntitiesUML.png)
 
 ---
 
