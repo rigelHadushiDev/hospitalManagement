@@ -144,3 +144,8 @@ The system is built on a **layered architecture**:
    ```bash
    http://localhost:8080
    ```
+5. Run unit tests:
+   ```bash
+    mvn test
+    ```
+   
